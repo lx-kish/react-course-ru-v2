@@ -21,29 +21,36 @@
   <script type="text/babel">
 	
 	const App = () => {
-		return <p>Hi there, im App, a component</p>
+		return (
+			<React.Fragment>
+				<p>Hi there, im App, a component</p>
+				<News />
+				<Comments />
+			</React.Fragment>
+		)
 	}
 	
 	const News = () => {
-		return <p>Unfortunately, there are no news till now</p>
+		return (
+			<React.Fragment>
+				<h3>News</h3>
+				<p>Unfortunately, there are no news till now</p>
+			</React.Fragment>
+		)
 	}
 	
-	class BigApp extends React.Component {
-		render() {
-			return (
-				<React.Fragment>
-					<h1>Im BigApp, a component</h1>
-					<p className='red'>Components might be put into each other.</p>
-					<App />
-					<News />
-				</React.Fragment>
-			)
-		}
+	const Comments = () => {
+		return (
+			<React.Fragment>
+				<h3>Comments</h3>
+				<p>There are no news, so there are no nothing to comment</p>
+			</React.Fragment>
+		)
 	}
-	
+
 	ReactDOM.render(
 		
-		<BigApp />,
+		<App />,
 		document.getElementById('root')
 	);
   
