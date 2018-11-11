@@ -8,6 +8,12 @@
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  
+  <style>
+	.red {
+		color: #FF0000;
+	}
+  </style>
 </head>
 
 <body>
@@ -15,12 +21,24 @@
   <script type="text/babel">
 	
 	const App = () => {
-		return <p>Hi there, im App component</p>
+		return <p>Hi there, im App, a component</p>
+	}
+	
+	class BigApp extends React.Component {
+		render() {
+			return (
+				<div>
+					<h1>Im BigApp, a component</h1>
+					<p className='red'>Components might be put into each other.</p>
+					<App />
+				</div>
+			)
+		}
 	}
 	
 	ReactDOM.render(
 		
-		<App />,
+		<BigApp />,
 		document.getElementById('root')
 	);
   
