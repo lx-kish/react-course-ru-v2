@@ -24,14 +24,19 @@
 		return <p>Hi there, im App, a component</p>
 	}
 	
+	const News = () => {
+		return <p>Unfortunately, there are no news till now</p>
+	}
+	
 	class BigApp extends React.Component {
 		render() {
 			return (
-				<div>
+				<React.Fragment>
 					<h1>Im BigApp, a component</h1>
 					<p className='red'>Components might be put into each other.</p>
 					<App />
-				</div>
+					<News />
+				</React.Fragment>
 			)
 		}
 	}
