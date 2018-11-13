@@ -10,11 +10,36 @@
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
   
   <style>
-	.red {
-		color: #FF0000;
-	}
 	.none {
 		display: none;
+	}
+	
+	body {
+		background: rgba(0, 102, 255, 0.38);
+		font-family: sans-serif;
+	}
+	
+	p {
+		margin: 0 0 5px;
+	}
+	
+	.article {
+		background: #FFF;
+		border: 1px solid rgba(0, 89, 181, 0.82);
+		width: 600px;
+		margin: 0 0 5px;
+		box-shadow: 2px 2px 5px -1px rgb(0, 81, 202);
+		padding: 3px 5px';
+	}
+	
+	.news__author {
+		text-decoration: underline;
+		color: #007DDC;
+	}
+	
+	.news__count {
+		margin: 10px 0 0 0;
+		display: block;
 	}
   </style>
 </head>
@@ -27,7 +52,7 @@
 		{
 			id: 1,
 			author: 'Alex Pechkin',
-			text: 'On thurthday, ...'
+			text: 'On thursday, ...'
 		},
 		{
 			id: 2,
@@ -46,29 +71,41 @@
 		}
 	];
 	
-	class News extends React.Component {
+	class Article extends React.Component {
 		render() {
+			const { author, text } = this.props.data
+			return (
+				<div className="article">
+					<p className="news__author">{author}:</p>
+					<p className="news__text">{text}</p>
+				</div>
+			)
+		}
+	}
+	
+	class News extends React.Component {
+		renderNews = () => {
 			const { data } = this.props
-			let newsTemplate
+			let newsTemplate = null
 			
 			if (data.length) {
 				newsTemplate = data.map(function(item){
-					return (
-						<div key={item.id}>
-							<p className="news__author">{item.author}:</p>
-							<p className="news__text">{item.text}</p>
-						</div>
-					)
+					return <Article key={item.id} data={item} />
 				})
 			} else {
 				newsTemplate = <p>Unfortunately, here are no news</p>
 			}
 			
+			return newsTemplate
+		}
+		render() {
+			const { data } = this.props
+			
 			return (
 				<div className="news">
-					{newsTemplate}
+					{this.renderNews()}
 					{
-						data.length ? <strong>Total news: {data.length}</strong> : null
+						data.length ? <strong className={'news__count'}>Total news: {data.length}</strong> : null
 					}
 				</div>
 			);
@@ -76,21 +113,11 @@
 		
 	}
 	
-	const Comments = () => {
-		return (
-			<React.Fragment>
-				<h3>Comments</h3>
-				<p>There are no news, so there are no nothing to comment</p>
-			</React.Fragment>
-		)
-	}
-
 	const App = () => {
 		return (
 			<React.Fragment>
-				<p>Hi there, im App, a component</p>
+				<h3>News</h3>
 				<News data={myNews}/> {/* added property data */}
-				<Comments />
 			</React.Fragment>
 		)
 	}
