@@ -13,6 +13,9 @@
 	.red {
 		color: #FF0000;
 	}
+	.none {
+		display: none;
+	}
   </style>
 </head>
 
@@ -22,18 +25,22 @@
 	
 	const myNews = [
 		{
+			id: 1,
 			author: 'Alex Pechkin',
 			text: 'On thurthday, ...'
 		},
 		{
+			id: 2,
 			author: 'Just Vasya',
 			text: 'I suggest $ should cost 35 rubles!'
 		},
 		{
+			id: 3,
 			author: 'Max Frontend',
 			text: '2 years past since the previous versions of books, but $ still does not cost 35'
 		},
 		{
+			id: 4,
 			author: 'Guest',
 			text: 'No sms, free of charge, about react, visit - https://maxpfrontend.ru'
 		}
@@ -41,22 +48,30 @@
 	
 	class News extends React.Component {
 		render() {
-			const newsTemplate = this.props.data.map(function(item, index){
-				return (
-					<div key={index}>
-						<p className="news__author">{item.author}:</p>
-						<p className="news__text">{item.text}</p>
-					</div>
-				)
-			})
+			const { data } = this.props
+			let newsTemplate
 			
-			console.log(newsTemplate)
+			if (data.length) {
+				newsTemplate = data.map(function(item){
+					return (
+						<div key={item.id}>
+							<p className="news__author">{item.author}:</p>
+							<p className="news__text">{item.text}</p>
+						</div>
+					)
+				})
+			} else {
+				newsTemplate = <p>Unfortunately, here are no news</p>
+			}
 			
 			return (
 				<div className="news">
 					{newsTemplate}
+					{
+						data.length ? <strong>Total news: {data.length}</strong> : null
+					}
 				</div>
-			)
+			);
 		}
 		
 	}
