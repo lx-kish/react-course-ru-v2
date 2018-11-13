@@ -20,23 +20,45 @@
   <div id="root"></div>
   <script type="text/babel">
 	
-	const App = () => {
-		return (
-			<React.Fragment>
-				<p>Hi there, im App, a component</p>
-				<News />
-				<Comments />
-			</React.Fragment>
-		)
-	}
+	const myNews = [
+		{
+			author: 'Alex Pechkin',
+			text: 'On thurthday, ...'
+		},
+		{
+			author: 'Just Vasya',
+			text: 'I suggest $ should cost 35 rubles!'
+		},
+		{
+			author: 'Max Frontend',
+			text: '2 years past since the previous versions of books, but $ still does not cost 35'
+		},
+		{
+			author: 'Guest',
+			text: 'No sms, free of charge, about react, visit - https://maxpfrontend.ru'
+		}
+	];
 	
-	const News = () => {
-		return (
-			<React.Fragment>
-				<h3>News</h3>
-				<p>Unfortunately, there are no news till now</p>
-			</React.Fragment>
-		)
+	class News extends React.Component {
+		render() {
+			const newsTemplate = this.props.data.map(function(item, index){
+				return (
+					<div key={index}>
+						<p className="news__author">{item.author}:</p>
+						<p className="news__text">{item.text}</p>
+					</div>
+				)
+			})
+			
+			console.log(newsTemplate)
+			
+			return (
+				<div className="news">
+					{newsTemplate}
+				</div>
+			)
+		}
+		
 	}
 	
 	const Comments = () => {
@@ -44,6 +66,16 @@
 			<React.Fragment>
 				<h3>Comments</h3>
 				<p>There are no news, so there are no nothing to comment</p>
+			</React.Fragment>
+		)
+	}
+
+	const App = () => {
+		return (
+			<React.Fragment>
+				<p>Hi there, im App, a component</p>
+				<News data={myNews}/> {/* added property data */}
+				<Comments />
 			</React.Fragment>
 		)
 	}
