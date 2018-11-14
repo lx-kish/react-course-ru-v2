@@ -9,6 +9,8 @@
   
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
   
+  <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+  
   <style>
 	.none {
 		display: none;
@@ -61,7 +63,7 @@
 		},
 		{
 			id: 3,
-			author: 'Max Frontend',
+			
 			text: '2 years past since the previous versions of books, but $ still does not cost 35'
 		},
 		{
@@ -81,6 +83,13 @@
 				</div>
 			)
 		}
+	}
+	
+	Article.propTypes = {
+		data: PropTypes.shape({
+			author: PropTypes.string.isRequired,
+			text: PropTypes.string.isRequired
+		})
 	}
 	
 	class News extends React.Component {
@@ -112,12 +121,16 @@
 		}
 		
 	}
+
+	News.propTypes = {
+		data: PropTypes.array.isRequired
+	}
 	
 	const App = () => {
 		return (
 			<React.Fragment>
 				<h3>News</h3>
-				<News data={myNews}/> {/* added property data */}
+				<News data={myNews}/>
 			</React.Fragment>
 		)
 	}
