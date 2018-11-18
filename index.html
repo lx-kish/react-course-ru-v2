@@ -43,6 +43,10 @@
 		margin: 10px 0 0 0;
 		display: block;
 	}
+	
+	.test-input {
+		margin: 0 5px 5px 0;
+	}
   </style>
 </head>
 
@@ -118,14 +122,6 @@
 	
 	class News extends React.Component {
 		
-		state = {
-			counter: 0
-		}
-		
-		handleTotalClick = () => {
-			this.setState({ counter: ++this.state.counter })
-		}
-		
 		renderNews = () => {
 			const { data } = this.props
 			let newsTemplate = null
@@ -147,10 +143,7 @@
 				<div className="news">
 					{this.renderNews()}
 					{
-						data.length ? <strong onClick={this.handleTotalClick} className={'news__count'}>Total news: {data.length}</strong> : null
-					}
-					{
-						data.length ? <p className={'counter'}>Total clicks: {this.state.counter}</p> : null
+						data.length ? <strong className={'news__count'}>Total news: {data.length}</strong> : null
 					}
 				</div>
 			);
@@ -162,10 +155,37 @@
 		data: PropTypes.array.isRequired
 	}
 	
+	class TestInput extends React.Component {
+	
+		constructor(props) {
+			super(props)
+			this.input = React.createRef()
+		}
+		
+		handleSubmit = () => {
+			alert( this.input.current.value )
+		}
+		
+		render() {
+			return (
+				<React.Fragment>
+					<input 
+						className='test-input'
+						defaultValue=''
+						placeholder='input data'
+						ref={this.input}
+					/>
+					<button onClick={this.handleSubmit}>Show alert</button>
+				</React.Fragment>
+			)
+		}
+	}
+	
 	const App = () => {
 		return (
 			<React.Fragment>
 				<h3>News</h3>
+				<TestInput />
 				<News data={myNews}/>
 			</React.Fragment>
 		)
