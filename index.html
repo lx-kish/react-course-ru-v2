@@ -47,6 +47,38 @@
 	.test-input {
 		margin: 0 5px 5px 0;
 	}
+	
+	.add {
+		margin: 0 5px 5px 0;
+		width: 210px;
+		border: 1px dashed rgba(0, 89, 181, 0.82);
+		padding: 5px;
+	}
+	
+	.add__author, .add__btn, .add__checkrule, .add__text {
+		display: block;
+		margin: 0 0 5px 0;
+		padding: 5px;
+		width: 94%;
+		border: 1px solid rgba(0, 89, 181, 0.82);
+	}
+	
+	.add__checkrule {
+		border: none;
+		font-size: 12px;
+	}
+	
+	.add__btn {
+		box-sizing: content-box;
+		color: #FFF;
+		text-transform: uppercase;
+		background: #007DDC;
+	}
+	
+	.add__btn:disabled {
+		background: #CCC;
+		color: #999;
+	}
   </style>
 </head>
 
@@ -155,31 +187,76 @@
 		data: PropTypes.array.isRequired
 	}
 	
-	class TestInput extends React.Component {
+	class Add extends React.Component {
 	
-		constructor(props) {
-			super(props)
-			this.input = React.createRef()
+		state = {
+			authorName: '',
+			newsText: '',
+			checkrule: false
 		}
 		
-		componentDidMount() {
-			this.input.current.focus()
+		handleChange = (e) => {
+			const { id, value } = e.currentTarget
+			this.setState({ [id]: e.currentTarget.value })
 		}
 		
-		handleSubmit = () => {
-			alert( this.input.current.value )
+		onChangeNewsText = (e) => {
+			this.setState({ newsText: e.currentTarget.value })
+		}
+		
+		fieldsValidation = () => {
+			const { authorName, newsText, checkrule } = this.state
+			if( authorName.trim() && newsText.trim() && checkrule ) {
+				return true
+			}
+			return false
+			
+		}
+		
+		onChangeCheckrule = (e) => {
+			this.setState({ checkrule: e.currentTarget.checked })
+		}
+		
+		handleSubmit = (e) => {
+			e.preventDefault()
+			alert(
+				this.state.authorName + '\n' +
+				this.state.newsText
+			)
 		}
 		
 		render() {
+			const { authorName, newsText, checkrule } = this.state
 			return (
 				<React.Fragment>
-					<input 
-						className='test-input'
-						defaultValue=''
-						placeholder='input data'
-						ref={this.input}
-					/>
-					<button onClick={this.handleSubmit}>Show alert</button>
+					<form className='add'>
+						<input 
+							id='authorName'
+							type='text'
+							className='add__author'
+							placeholder='input author name'
+							onChange={this.handleChange}
+							value={authorName}
+						/>
+						<textarea 
+							id='newsText'
+							className='add__text'
+							placeholder='news text'
+							onChange={this.handleChange}
+							value={newsText}
+						></textarea>
+						<label className='add__checkrule'>
+							<input
+								type='checkbox'
+								onChange={this.onChangeCheckrule}
+							/>I'm agree with the rules
+						</label>
+						<button 
+							className='add__btn'
+							onClick={this.handleSubmit}
+							disabled={!this.fieldsValidation()}
+						>Show alert</button>
+					</form>
 				</React.Fragment>
 			)
 		}
@@ -188,8 +265,8 @@
 	const App = () => {
 		return (
 			<React.Fragment>
+				<Add />
 				<h3>News</h3>
-				<TestInput />
 				<News data={myNews}/>
 			</React.Fragment>
 		)
