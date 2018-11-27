@@ -55,7 +55,7 @@
 		padding: 5px;
 	}
 	
-	.add__author, .add__btn, .add__checkrule, .add__text {
+	.add__author, .add__btn, .add__checkrule, .add__text, .add__bigText {
 		display: block;
 		margin: 0 0 5px 0;
 		padding: 5px;
@@ -146,6 +146,7 @@
 	
 	Article.propTypes = {
 		data: PropTypes.shape({
+			id: PropTypes.number.isRequired,
 			author: PropTypes.string.isRequired,
 			text: PropTypes.string.isRequired,
 			bigText: PropTypes.string.isRequired
@@ -190,8 +191,9 @@
 	class Add extends React.Component {
 	
 		state = {
-			authorName: '',
-			newsText: '',
+			name: '',
+			text: '',
+			bigText: '',
 			checkrule: false
 		}
 		
@@ -201,49 +203,57 @@
 		}
 		
 		onChangeNewsText = (e) => {
-			this.setState({ newsText: e.currentTarget.value })
+			this.setState({ text: e.currentTarget.value })
 		}
 		
 		fieldsValidation = () => {
-			const { authorName, newsText, checkrule } = this.state
-			if( authorName.trim() && newsText.trim() && checkrule ) {
+			const { name, text, checkrule } = this.state
+			if( name.trim() && text.trim() && checkrule ) {
 				return true
 			}
 			return false
-			
 		}
 		
 		onChangeCheckrule = (e) => {
 			this.setState({ checkrule: e.currentTarget.checked })
 		}
 		
-		handleSubmit = (e) => {
+		onBtnClickHandler = (e) => {
 			e.preventDefault()
-			alert(
-				this.state.authorName + '\n' +
-				this.state.newsText
-			)
+			const { name, text, bigText } = this.state
+			this.props.onAddNews({ 
+				id: +new Date(),
+				author: name,
+				text, bigText
+			})
 		}
 		
 		render() {
-			const { authorName, newsText, checkrule } = this.state
+			const { name, text, bigText, checkrule } = this.state
 			return (
 				<React.Fragment>
 					<form className='add'>
 						<input 
-							id='authorName'
+							id='name'
 							type='text'
 							className='add__author'
 							placeholder='input author name'
 							onChange={this.handleChange}
-							value={authorName}
+							value={name}
 						/>
 						<textarea 
-							id='newsText'
+							id='text'
 							className='add__text'
 							placeholder='news text'
 							onChange={this.handleChange}
-							value={newsText}
+							value={text}
+						></textarea>
+						<textarea 
+							id='bigText'
+							className='add__bigText'
+							placeholder='news full text'
+							onChange={this.handleChange}
+							value={bigText}
 						></textarea>
 						<label className='add__checkrule'>
 							<input
@@ -253,7 +263,7 @@
 						</label>
 						<button 
 							className='add__btn'
-							onClick={this.handleSubmit}
+							onClick={this.onBtnClickHandler}
 							disabled={!this.fieldsValidation()}
 						>Show alert</button>
 					</form>
@@ -262,14 +272,32 @@
 		}
 	}
 	
-	const App = () => {
-		return (
-			<React.Fragment>
-				<Add />
-				<h3>News</h3>
-				<News data={myNews}/>
-			</React.Fragment>
-		)
+	Add.propTypes = {
+		onAddNews: PropTypes.func.isRequired
+	}
+	
+	class App extends React.Component {
+		state = {
+			news: myNews
+		}
+		
+		handleAddNews = (data) => {
+			//console.log(data)
+			const nextNews = [data, ...this.state.news]
+			this.setState({ news: nextNews })
+			//console.log('I\'ve called from Add, but has access to this.state of App', this.state)
+		}
+		
+		render() {
+		
+			return (
+				<React.Fragment>
+					<Add onAddNews={this.handleAddNews}/>
+					<h3>News</h3>
+					<News data={this.state.news}/>
+				</React.Fragment>
+			)
+		}
 	}
 
 	ReactDOM.render(
