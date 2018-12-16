@@ -4,12 +4,28 @@ import { Article } from './Article';
 
 class News extends React.Component {
 		
+	state = {
+		filteredNews: this.props.data
+	}
+		
+	componentWillReceiveProps(nextProps) {
+		let nextFilteredNews = [...nextProps.data]
+		
+		nextFilteredNews.forEach((item, index) => {
+			if(item.bigText.toLowerCase().indexOf('pubg') !== -1) {
+				item.bigText = 'SPAM'
+			}
+		})
+		
+		this.setState({filteredNews: nextFilteredNews})
+	}
+	
 	renderNews = () => {
-		const { data } = this.props
+		const { filteredNews } = this.state
 		let newsTemplate = null
 			
-		if (data.length) {
-			newsTemplate = data.map(function(item){
+		if (filteredNews.length) {
+			newsTemplate = filteredNews.map(function(item){
 				return <Article key={item.id} data={item} />
 			})
 		} else {
@@ -19,13 +35,13 @@ class News extends React.Component {
 		return newsTemplate
 	}
 	render() {
-		const { data } = this.props
+		const { filteredNews } = this.state
 		
 		return (
 			<div className="news">
 				{this.renderNews()}
 				{
-					data.length ? <strong className={'news__count'}>Total news: {data.length}</strong> : null
+					filteredNews.length ? <strong className={'news__count'}>Total news: {filteredNews.length}</strong> : null
 				}
 			</div>
 		);

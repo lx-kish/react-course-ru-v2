@@ -78,7 +78,7 @@ class Add extends React.Component {
 						className='add__btn'
 						onClick={this.onBtnClickHandler}
 						disabled={!this.fieldsValidation()}
-					>Show alert</button>
+					>Add news</button>
 				</form>
 			</React.Fragment>
 		)
