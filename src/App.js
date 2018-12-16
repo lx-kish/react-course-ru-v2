@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Add } from './components/Add';
 import { News } from './components/News';
-//import newsData from './data/newsData';
 
 import './App.css';
 	
@@ -12,6 +11,26 @@ class App extends React.Component {
 		isLoading: false
 	}
 	
+	static getDerivedStateFromProps(props, state) {
+		let nextFilteredNews
+		
+		if(Array.isArray(state.news)) {
+			nextFilteredNews = [...state.news]
+		
+			nextFilteredNews.forEach((item, index) => {
+				if(item.bigText.toLowerCase().indexOf('pubg') !== -1) {
+					item.bigText = 'SPAM'
+				}
+			})
+		
+			return {
+				filteredNews: nextFilteredNews
+			}
+		}
+		
+		return null
+	}
+
 	componentDidMount() {
 		
 		this.setState({ isLoading: true })
@@ -26,7 +45,7 @@ class App extends React.Component {
 					news: data,
 					isLoading: false
 				})
-			}, 3000)
+			}, 1000)
 		})
 	}
 	
